@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 button,
+input,
+select {
+  cursor: pointer;
+}
+button,
 input[type="number"],
 select {
   border: #ccc solid 2px;
@@ -127,6 +132,7 @@ html body .normalGameDiv .table .tableLine .tableBox {
   float: left;
   transition: all 0.2s;
   position: relative;
+  cursor: none;
 }
 html body .normalGameDiv .table .tableLine .tableBox .block {
   width: 100%;
@@ -135,12 +141,11 @@ html body .normalGameDiv .table .tableLine .tableBox .block {
   position: absolute;
   left: 0;
   top: 0;
-  transition: outline-color 0.5s;
   outline-width: 3px;
   outline-color: transparent;
+  border-radius: 50%;
 }
 html body .normalGameDiv .table .tableLine .tableBox .block:hover {
-  cursor: pointer;
   outline-style: solid;
 }
 html body .normalGameDiv .table .tableLine .tableBox .bz {
