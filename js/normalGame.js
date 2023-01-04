@@ -38,6 +38,14 @@ class NormalGame {
         this.turnIndex = 0;
         this._initBoard();
         this._initFunction();
+        /**
+         * 动画开关
+         * @type {{}}
+         */
+        this.animationSwitch = {
+            "boardShake": false,  // 棋盘抖动
+            "shockWave": true,  // 触发吃子时的 落子位置 震荡波
+        }
     }
 
     _getHoverCss() {
@@ -50,7 +58,7 @@ class NormalGame {
     }
 
     /**
-     * 初始化一些功能：随机下棋按钮绑定事件。
+     * 初始化一些功能：给界面上的按钮绑定事件。例如随机下棋按钮
      * @private
      */
     _initFunction() {
@@ -76,6 +84,18 @@ class NormalGame {
 
                 randomStep();
             }
+        }
+        let self = this;  // self 指 这个类本身的this。
+
+        $(".animationSwitch-boardShake").onclick = function () {
+            self.animationSwitch.boardShake = !self.animationSwitch.boardShake;
+            this.innerText = this.innerText.split("：")[0] + "：" + self.animationSwitch.boardShake;
+            console.log(123)
+        }
+        $(".animationSwitch-shockWave").onclick = function () {
+            self.animationSwitch.shockWave = !self.animationSwitch.shockWave;
+            this.innerText = this.innerText.split("：")[0] + "：" + self.animationSwitch.shockWave;
+            console.log(456)
         }
     }
 
@@ -316,14 +336,14 @@ class NormalGame {
      * @return {number}
      * @private
      */
-    _gasCount(rootPoint) {
+    _libertyCount(rootPoint) {
         let n = this._get(rootPoint);
         if (GameObject.isPlayer(n)) {
             // 当前这个点不是障碍物，也不是空气
             let q = [rootPoint];
             let visitedBody = new PointSet();
             visitedBody.add(rootPoint); // 添加访问
-            let gasSet = new PointSet();
+            let libertySet = new PointSet();
             while (q.length) {
                 let p = q.shift();  // 队列出
                 // 遍历当前的周围四个
@@ -331,7 +351,7 @@ class NormalGame {
                     if (roundP.isInSquireBoard(this.width, this.height)) {
                         if (this._get(roundP) === GameObject.air) {
                             // 当前这个是空气
-                            gasSet.add(roundP);
+                            libertySet.add(roundP);
                         }
                         if (this._get(roundP) === n && visitedBody.notHave(roundP)) {
                             // 当前这个是自己还没访问过的身体
@@ -341,7 +361,7 @@ class NormalGame {
                     }
                 }
             }
-            return gasSet.size();
+            return libertySet.size();
         } else {
             return 0;
         }
@@ -404,7 +424,7 @@ class NormalGame {
                         for (let r of this._getRound(moveLoc.x, moveLoc.y)) {
                             if (GameObject.isPlayer(this._get(r))) {
                                 // 检测这个玩家是否死了
-                                if (this._gasCount(r) === 0) {
+                                if (this._libertyCount(r) === 0) {
                                     // 被火石挤死了
                                     console.log(r, "这个位置的玩家被挤死了")
                                     deadList = deadList.concat(this._getGroupSet(r).toArray());
@@ -501,7 +521,7 @@ class NormalGame {
             // 邻接的四个棋子中有 玩家棋子 并且这个棋子不是自己
             if (GameObject.isPlayer(n) && n !== nowUser) {
                 // 从这个棋子开始BFS检测是不是死了
-                if (this._gasCount(p) === 0) {
+                if (this._libertyCount(p) === 0) {
                     // 死了
                     attackFlag = true;
                     attackArr = attackArr.concat(this._getGroupSet(p).toArray())
@@ -539,7 +559,7 @@ class NormalGame {
         if (!attackFlag) {
             // 如果放下去之后会导致自己死了，那么就不能放，需要撤回放置
             // 检测自己是不是死了
-            if (this._gasCount(putPoint) === 0) {
+            if (this._libertyCount(putPoint) === 0) {
                 this._set(putPoint, GameObject.air);
                 // 不能放置！！
                 console.warn("不能触发攻击，且会导致自杀");
@@ -562,16 +582,18 @@ class NormalGame {
                 box.removeChild(fxEle);
 
                 // 棋盘振动特效
-                this.bindTableEle.classList.add("boardShakeFx");
-                let shakeDur = 300;
-                this.bindTableEle.style.animationDuration = `${shakeDur}ms`;
+                if (this.animationSwitch.boardShake) {
+                    this.bindTableEle.classList.add("boardShakeFx");
+                    let shakeDur = 300;
+                    this.bindTableEle.style.animationDuration = `${shakeDur}ms`;
 
-                setTimeout(() => {
-                    this.bindTableEle.classList.remove("boardShakeFx");
-                }, shakeDur)
+                    setTimeout(() => {
+                        this.bindTableEle.classList.remove("boardShakeFx");
+                    }, shakeDur)
+                }
 
                 // 周围的棋子像波浪一样振动
-                if (attackFlag) {
+                if (attackFlag && this.animationSwitch.shockWave) {
                     for (let y = 0; y < this.height; y++) {
                         for (let x = 0; x < this.width; x++) {
                             let p = new Point(x, y);
