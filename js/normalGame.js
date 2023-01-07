@@ -748,6 +748,7 @@ class NormalGame {
      * 刷新渲染
      */
     rend() {
+        // console.log(this.arr);
         // 先更新鼠标放上去的颜色
         $(".normalStyle").innerText = this._getHoverCss();
 

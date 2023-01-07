@@ -4,6 +4,9 @@
  */
 window.onload = function () {
     let normalOption = $(".normalOption");
+    let onlineOption = $(".onlineOption");
+    let gameDiv = $(".normalGameDiv");
+    let onlineGameDiv = $(".onlineGameDiv");
     // 玩家数量更改
     let playerNumberInput = $(".playerNumber");
     playerNumberInput.onchange = function () {
@@ -32,14 +35,35 @@ window.onload = function () {
     $(".normal").addEventListener("click", () => {
         // 弹出选择框
         normalOption.style.display = "block";
+        onlineOption.style.display = "none";
     });
 
     // 正方模式设置好了的开始按钮
     $(".normalOption .play").onclick = function () {
-        let gameDiv = $(".normalGameDiv");
         gameDiv.style.display = "block";
+        onlineGameDiv.style.display = "none";
         let game = new NormalGame(gameDiv, normalOption);
         normalOption.style.display = "none";
+    }
+
+    // 选择连接服务器
+    $(".online").addEventListener("click", () => {
+        // 弹出选择框
+        normalOption.style.display = "none";
+        onlineOption.style.display = "block";
+    });
+
+    // 连接服务器，开始
+    $(".onlineOption .play").onclick = function () {
+        gameDiv.style.display = "none";
+        onlineGameDiv.style.display = "block";
+        let game = new OnlineGame(onlineGameDiv, onlineOption);
+        onlineOption.style.display = "none";
+    }
+
+    // 连接服务器，创建
+    $(".onlineOption .create").onclick = function () {
+        let game = new OnlineGame(gameDiv, onlineOption, true);
     }
 
 

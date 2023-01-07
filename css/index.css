@@ -10,6 +10,7 @@ select {
 }
 button,
 input[type="number"],
+input[type="text"],
 select {
   border: #ccc solid 2px;
   padding: 0.7em 1em;
@@ -19,9 +20,11 @@ select {
 }
 button:hover,
 input[type="number"]:hover,
+input[type="text"]:hover,
 select:hover,
 button:focus,
 input[type="number"]:focus,
+input[type="text"]:focus,
 select:focus {
   background-color: #333;
   color: #fff;
@@ -29,10 +32,12 @@ select:focus {
 }
 button::-webkit-inner-spin-button,
 input[type="number"]::-webkit-inner-spin-button,
+input[type="text"]::-webkit-inner-spin-button,
 select::-webkit-inner-spin-button {
   display: none;
 }
 input[type="number"],
+input[type="text"],
 select {
   padding: 0.5em;
   border-radius: 7px;
@@ -84,27 +89,30 @@ html body .normalGameDiv .wip:hover::before {
   color: #000;
   font-weight: bold;
 }
-html body .normalOption {
+html body .option {
   border: #ccc solid 2px;
   border-radius: 10px;
   padding: 1em;
   margin: 1em;
   box-shadow: #aaa 0 0 2px;
 }
-html body .normalOption label {
+html body .option label {
   display: block;
 }
-html body .normalOption :not(label) {
+html body .option :not(label) {
   margin-bottom: 0.5em;
 }
-html body .normalOption button {
+html body .option button {
   display: block;
 }
-html body .normalGameDiv .boardShakeFx {
+html body .game {
+  text-align: center;
+}
+html body .game .boardShakeFx {
   animation-name: littleShake;
   animation-fill-mode: forwards;
 }
-html body .normalGameDiv .table {
+html body .game .table {
   width: 100%;
   outline: solid 1px;
   padding-top: 100px;
@@ -112,29 +120,31 @@ html body .normalGameDiv .table {
   padding-bottom: 100px;
   background-color: #d3a969;
 }
-html body .normalGameDiv .table .tableLine {
+html body .game .table .tableLine {
   height: 30px;
   margin-bottom: 0;
+  white-space: nowrap;
+  word-wrap: normal;
+  word-break: keep-all;
 }
-html body .normalGameDiv .table .tableLine .tableBoxShakeFx {
+html body .game .table .tableLine .tableBoxShakeFx {
   animation-name: small;
   animation-fill-mode: forwards;
 }
-html body .normalGameDiv .table .tableLine .tableBoxHover {
+html body .game .table .tableLine .tableBoxHover {
   outline-width: 3px;
   z-index: 4;
   transform: scale(1.5);
 }
-html body .normalGameDiv .table .tableLine .tableBox {
+html body .game .table .tableLine .tableBox {
   width: 30px;
   height: 30px;
   margin-left: 0;
   float: left;
   transition: all 0.2s;
   position: relative;
-  cursor: none;
 }
-html body .normalGameDiv .table .tableLine .tableBox .block {
+html body .game .table .tableLine .tableBox .block {
   width: 100%;
   height: 100%;
   z-index: 3;
@@ -145,10 +155,10 @@ html body .normalGameDiv .table .tableLine .tableBox .block {
   outline-color: transparent;
   border-radius: 50%;
 }
-html body .normalGameDiv .table .tableLine .tableBox .block:hover {
+html body .game .table .tableLine .tableBox .block:hover {
   outline-style: solid;
 }
-html body .normalGameDiv .table .tableLine .tableBox .bz {
+html body .game .table .tableLine .tableBox .bz {
   display: block;
   position: absolute;
   left: 0;
@@ -158,10 +168,10 @@ html body .normalGameDiv .table .tableLine .tableBox .bz {
   z-index: 0;
   background-size: contain;
 }
-html body .normalGameDiv .table .tableLine .tableBox .bz:hover {
+html body .game .table .tableLine .tableBox .bz:hover {
   filter: blur(5px);
 }
-html body .normalGameDiv .table .tableLine .tableBox .littleStone {
+html body .game .table .tableLine .tableBox .littleStone {
   position: absolute;
   border-radius: 50%;
   left: 50%;
@@ -169,7 +179,7 @@ html body .normalGameDiv .table .tableLine .tableBox .littleStone {
   z-index: 1;
   transition-timing-function: ease-out;
 }
-html body .normalGameDiv .table .tableLine .tableBox .shrink {
+html body .game .table .tableLine .tableBox .shrink {
   position: absolute;
   width: 30px;
   height: 30px;
@@ -180,7 +190,7 @@ html body .normalGameDiv .table .tableLine .tableBox .shrink {
   animation-name: blockBoom;
   animation-fill-mode: forwards;
 }
-html body .normalGameDiv .table .tableLine .tableBox .putFx {
+html body .game .table .tableLine .tableBox .putFx {
   position: absolute;
   width: 30px;
   height: 30px;
@@ -191,24 +201,24 @@ html body .normalGameDiv .table .tableLine .tableBox .putFx {
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
-html body .normalGameDiv .table .tableLine .tableBox .wall {
+html body .game .table .tableLine .tableBox .wall {
   background-color: dimgray;
   border-radius: 20%;
   outline: none;
 }
-html body .normalGameDiv .table .tableLine .tableBox .wall:hover {
+html body .game .table .tableLine .tableBox .wall:hover {
   cursor: not-allowed;
 }
-html body .normalGameDiv .table .tableLine .tableBox .fireStone {
+html body .game .table .tableLine .tableBox .fireStone {
   background-color: #ea4040;
   border: solid 3px gold;
   border-radius: 20%;
   outline: none;
 }
-html body .normalGameDiv .table .tableLine .tableBox .fireStone:hover {
+html body .game .table .tableLine .tableBox .fireStone:hover {
   cursor: not-allowed;
 }
-html body .normalGameDiv .table .tableLine .tableBox .fireStoneMoveFx {
+html body .game .table .tableLine .tableBox .fireStoneMoveFx {
   background-color: #ea4040;
   border: solid 3px gold;
   border-radius: 20%;
@@ -216,10 +226,10 @@ html body .normalGameDiv .table .tableLine .tableBox .fireStoneMoveFx {
   width: 30px;
   height: 30px;
 }
-html body .normalGameDiv .table .tableLine .tableBox .playerBlock {
+html body .game .table .tableLine .tableBox .playerBlock {
   border-radius: 50%;
 }
-html body .normalGameDiv .table .tableLine .tableBox .playerBlock:hover {
+html body .game .table .tableLine .tableBox .playerBlock:hover {
   cursor: auto;
 }
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=./index.css.map */

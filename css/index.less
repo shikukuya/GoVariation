@@ -12,6 +12,7 @@ select {
 
 button,
 input[type="number"],
+input[type="text"],
 select {
   border: #ccc solid 2px;
   padding: 0.7em 1em;
@@ -32,6 +33,7 @@ select {
 }
 
 input[type="number"],
+input[type="text"],
 select {
   padding: 0.5em;
   border-radius: 7px;
@@ -91,7 +93,7 @@ html {
       }
     }
 
-    .normalOption {
+    .option {
       border: #ccc solid 2px;
       border-radius: 10px;
       padding: 1em;
@@ -111,7 +113,9 @@ html {
       }
     }
 
-    .normalGameDiv {
+    .game {
+      text-align: center;
+
       .boardShakeFx {
         animation-name: littleShake;
         animation-fill-mode: forwards;
@@ -133,6 +137,9 @@ html {
         .tableLine {
           height: @L;
           margin-bottom: @M;
+          white-space: nowrap;
+          word-wrap: normal;
+          word-break: keep-all;
           //outline: solid 1px;
 
           .tableBoxShakeFx {
@@ -155,7 +162,6 @@ html {
             float: left;
             transition: all 0.2s;
             position: relative;
-            cursor: none;
 
 
             .block {
